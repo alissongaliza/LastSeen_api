@@ -1,9 +1,9 @@
-var express = require("express");
-var graphqlHTTP = require("express-graphql");
-var { buildSchema } = require("graphql");
+const { ApolloServer, gql } = require('apollo-server')
 var axios = require("axios");
-const _ = require('lodash')
+const _ = require('lodash');
 const JustWatch = require("justwatch-api");
+const image2base64 = require('image-to-base64')
+
 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_URL = "https://image.tmdb.org/t/p/w500";
@@ -11,7 +11,7 @@ const TMDB_API_KEY = "dc1a229b6a5f81208412ed5e273fe045";
 
 
 // Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
+const typeDefs = gql`
   type Movie {
     id: Int!
     title: String!
@@ -57,6 +57,7 @@ var schema = buildSchema(`
 
   type Query {
     searchByTitle(title:String!): [TinyMovie]
+    searchPopularMovies:[TinyMovie]
     searchById(id:Int!): Movie
     searchAvailabilityByTitle(title:String!): [Streaming]
     searchProviders: [Company]
@@ -84,63 +85,72 @@ var schema = buildSchema(`
     vote_average
     vote_count
   }
-`);
-// The root provides a resolver function for each API endpoint
-var root = {
-  searchByTitle: ({ title }) => {
-    return axios
-      .get(`${TMDB_BASE_URL}/search/movie`, {
-        params: { api_key: TMDB_API_KEY, query: title }
-      })
-      .then(({ data }) => data.results)
-      .catch(e => e);
-  },
-  searchById: ({ id }) => {
-    return axios
-      .get(`${TMDB_BASE_URL}/movie/${id}`, {
-        params: { api_key: TMDB_API_KEY }
-      })
-      .then(({ data }) => console.log(data))
-      .catch(e => e);
-  },
-  searchProviders: () => {
-    return new JustWatch().getProviders().then(e =>
-      e.map(({ id, clear_name }) => {
-        return { id, name: clear_name };
-      })
-    );
-  },
-  searchAvailabilityByTitle: async ({ title }) => {
-    const movies = await new JustWatch().search({ query: title });
+`;
+// The resolvers provides a resolver function for each API endpoint
+const resolvers = {
+    Query: {
+        searchByTitle: (obj, { title }, context, info) => {
+            return axios
+                .get(`${TMDB_BASE_URL}/search/movie`, {
+                    params: { api_key: TMDB_API_KEY, query: title }
+                })
+                .then(( data ) => data.data.results)
+                .catch(e => e);
+        },
+        searchById: (obj, { id }, context, info) => {
+            console.log(id);
 
-    let providers = movies.items[0].offers.map(({ provider_id, urls }) => {     
-      //each resolution (hd,sd,etc) is returned as a new provider, but I'm only interested in the provider id, so I still have to remove the duplicates
-      return {
-        id: provider_id,
-        web_url: urls.standard_web,
-        android_url: urls.deeplink_android,
-        ios_url: urls.deeplink_ios
-      };
-    });
-    return _.uniqBy(providers,'id');  //removes duplicates
-  }
-  // searchMoviePoster:({ path }) => {
-  //   return axios
-  //     .get(`${IMAGE_URL}/${path}`, { params: { api_key:TMDB_API_KEY } })
-  //     .then(({ data }) =>{
-        
-  //     })
-  //     .catch(e => console.log(e));
-  // }
+            return axios
+                .get(`${TMDB_BASE_URL}/movie/${id}`, {
+                    params: { api_key: TMDB_API_KEY }
+                })
+                .then(({ data }) => console.log(data))
+                .catch(e => e);
+        },
+        searchPopularMovies: (obj, args , context, info) => {
+            return axios
+                .get(`${TMDB_BASE_URL}/movie/popular`, {
+                    params: { api_key: TMDB_API_KEY }
+                })
+                .then(( data ) => data.data.results)
+                .catch(e => e);
+        },
+        searchProviders: () => {
+            return new JustWatch().getProviders().then(e =>
+                e.map(({ id, clear_name }) => {
+                    return { id, name: clear_name };
+                })
+            );
+        },
+        searchAvailabilityByTitle: async (obj, { title }, context, info) => {
+            const movies = await new JustWatch().search({ query: title });
+
+            let providers = movies.items[0].offers.map(({ provider_id, urls }) => {
+                //each resolution (hd,sd,etc) is returned as a new provider, but 
+                //I'm only interested in the provider id, so I still have to remove the duplicates
+                return {
+                    id: provider_id,
+                    web_url: urls.standard_web,
+                    android_url: urls.deeplink_android,
+                    ios_url: urls.deeplink_ios
+                };
+            });
+            return _.uniqBy(providers, 'id');  //removes duplicates
+        }
+        // searchMoviePoster:({ path }) => {
+        //   return axios
+        //     .get(`${IMAGE_URL}/${path}`, { params: { api_key:TMDB_API_KEY } })
+        //     .then(({ data }) =>{
+
+        //     })
+        //     .catch(e => console.log(e));
+        // }
+    }
+
 };
 
-var app = express();
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema,
-    rootValue: root,
-    graphiql: true
-  })
-);
-app.listen(4000);
+const server = new ApolloServer({ typeDefs, resolvers, cors:true });
+server.listen().then(({ url }) => {
+    console.log(`Server ready at ${url}`);
+
+});
