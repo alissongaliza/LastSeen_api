@@ -26,6 +26,7 @@ const typeDefs = gql`
     vote_average: Float,
     vote_count: Int
     poster_path: String
+    poster_fullPath: String
   }
 
   type TinyMovie{
@@ -36,6 +37,7 @@ const typeDefs = gql`
     vote_average: Float,
     vote_count: Int
     poster_path: String
+    poster_fullPath: String
   }
 
   type Genre {
@@ -57,7 +59,7 @@ const typeDefs = gql`
 
   type Query {
     searchByTitle(title:String!): [TinyMovie]
-    searchPopularMovies:[TinyMovie]
+    searchPopularMovies:[Movie]
     searchById(id:Int!): Movie
     searchAvailabilityByTitle(title:String!): [Streaming]
     searchProviders: [Company]
@@ -112,7 +114,10 @@ const resolvers = {
                 .get(`${TMDB_BASE_URL}/movie/popular`, {
                     params: { api_key: TMDB_API_KEY }
                 })
-                .then(( data ) => data.data.results)
+                .then(({data})=>{
+                    console.log('Searched Popular Movies')
+                    return data.results
+                })
                 .catch(e => e);
         },
         searchProviders: () => {
@@ -137,15 +142,18 @@ const resolvers = {
             });
             return _.uniqBy(providers, 'id');  //removes duplicates
         }
-        // searchMoviePoster:({ path }) => {
-        //   return axios
-        //     .get(`${IMAGE_URL}/${path}`, { params: { api_key:TMDB_API_KEY } })
-        //     .then(({ data }) =>{
-
-        //     })
-        //     .catch(e => console.log(e));
-        // }
+    },
+    Movie:{
+        poster_fullPath: ({poster_path})=>{
+            return `${IMAGE_URL}${poster_path}`
+        }
     }
+    ,
+    // TinyMovie:{
+    //     poster_fullPath: ({poster_path})=>{
+    //         return `${IMAGE_URL}${poster_path}`
+    //     }
+    // }
 
 };
 
