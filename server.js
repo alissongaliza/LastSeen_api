@@ -59,7 +59,7 @@ const typeDefs = gql`
 
   type Query {
     searchByTitle(title:String!): [TinyMovie]
-    searchPopularMovies:[Movie]
+    searchPopularMovies:[TinyMovie]
     searchById(id:Int!): Movie
     searchAvailabilityByTitle(title:String!): [Streaming]
     searchProviders: [Company]
