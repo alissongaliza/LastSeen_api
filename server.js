@@ -19,21 +19,10 @@ const typeDefs = gql`
     original_language: String
     original_title: String
     overview: String
+    popularity: Float    
     release_date: String
     runtime: Int
-    status: String
     tagline: String
-    vote_average: Float,
-    vote_count: Int
-    poster_path: String
-    poster_fullPath: String
-  }
-
-  type TinyMovie{
-    id: Int!
-    title: String!
-    original_title: String
-    release_date: String
     vote_average: Float,
     vote_count: Int
     poster_path: String
@@ -58,34 +47,11 @@ const typeDefs = gql`
   }
 
   type Query {
-    searchByTitle(title:String!): [TinyMovie]
-    searchPopularMovies:[TinyMovie]
+    searchByTitle(title:String!): [Movie]
+    searchPopularMovies:[Movie]
     searchById(id:Int!): Movie
     searchAvailabilityByTitle(title:String!): [Streaming]
     searchProviders: [Company]
-  }
-
-  fragment movieInfo on Movie {
-    id
-    title
-    original_language
-    original_title
-    overview
-    release_date
-    runtime
-    status
-    tagline
-    vote_average
-    vote_count
-  }
-
-  fragment tinyMovieInfo on Movie {
-    id
-    title
-    original_title
-    release_date
-    vote_average
-    vote_count
   }
 `;
 // The resolvers provides a resolver function for each API endpoint
@@ -148,12 +114,6 @@ const resolvers = {
             return `${IMAGE_URL}${poster_path}`
         }
     }
-    ,
-    // TinyMovie:{
-    //     poster_fullPath: ({poster_path})=>{
-    //         return `${IMAGE_URL}${poster_path}`
-    //     }
-    // }
 
 };
 
