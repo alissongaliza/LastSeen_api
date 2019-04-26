@@ -8,7 +8,6 @@
         "express": "^4.16.4",
         "express-graphql": "^0.7.1",
         "graphql": "^14.2.1",
-        "image-to-base64": "^2.0.1",
         "justwatch-api": "^1.0.4",
         "lodash": "^4.17.11",
         "nodemon": "^1.18.11"
