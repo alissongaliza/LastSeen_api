@@ -10,13 +10,35 @@ const COMPANY_LOGO = 'https://images.justwatch.com'
 const ICON_SIZE = 's100/'
 const TMDB_API_KEY = "dc1a229b6a5f81208412ed5e273fe045";
 
+let MOVIES_GENRES =
+    [
+        { id: 28, name: "Action" },
+        { id: 12, name: "Adventure" },
+        { id: 16, name: "Animation" },
+        { id: 35, name: "Comedy" },
+        { id: 80, name: "Crime" },
+        { id: 99, name: "Documentary" },
+        { id: 18, name: "Drama" },
+        { id: 10751, name: "Family" },
+        { id: 14, name: "Fantasy" },
+        { id: 36, name: "History" },
+        { id: 27, name: "Horror" },
+        { id: 10402, name: "Music" },
+        { id: 9648, name: "Mystery" },
+        { id: 10749, name: "Romance" },
+        { id: 878, name: "Science Fiction" },
+        { id: 10770, name: "TV Movie" },
+        { id: 53, name: "Thriller" },
+        { id: 10752, name: "War" },
+        { id: 37, name: "Western" }
+    ]
 
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
   type Movie {
     id: Int!
     title: String!
-    genres: [Genre]
+    genre_ids: [Genre]
     original_language: String
     original_title: String
     overview: String
@@ -69,8 +91,6 @@ const resolvers = {
                 .catch(e => e);
         },
         searchById: (obj, { id }, context, info) => {
-            console.log(id);
-
             return axios
                 .get(`${TMDB_BASE_URL}/movie/${id}`, {
                     params: { api_key: TMDB_API_KEY }
@@ -85,6 +105,7 @@ const resolvers = {
                 })
                 .then(({ data }) => {
                     console.log('Searched Popular Movies')
+
                     return data.results
                 })
                 .catch(e => e);
@@ -112,13 +133,20 @@ const resolvers = {
             return _.uniqBy(providers, 'id');  //removes duplicates
         }
     },
+    Genre: {
+        id: (id) => {
+            return _.find(MOVIES_GENRES, (el)=>  el.id == id)
+        }
+    },
     Movie: {
         poster_fullPath: ({ poster_path }) => {
             return `${IMAGE_URL}${poster_path}`
         },
-        streamingServices:async ({title}) => {
+        streamingServices: async ({ title }) => {
             const movies = await new JustWatch().search({ query: title });
 
+            if (movies.items[0].offers == undefined)
+                return null
             let providers = movies.items[0].offers.map(({ provider_id, urls }) => {
                 //each resolution (hd,sd,etc) is returned as a new provider, but 
                 //I'm only interested in the provider id, so I still have to remove the duplicates
@@ -140,13 +168,13 @@ const resolvers = {
 
 
                 const company = e.filter(el => {
-                   return el.id == id
+                    return el.id == id
                 })[0]
 
                 if (!company)
                     return null
-                else{
-                    const iconURL = `${COMPANY_LOGO}${company.icon_url.replace('{profile}',ICON_SIZE)}`
+                else {
+                    const iconURL = `${COMPANY_LOGO}${company.icon_url.replace('{profile}', ICON_SIZE)}`
                     return { id: company.id, name: company.clear_name, iconURL }
                 }
             }
@@ -161,3 +189,13 @@ server.listen().then(({ url }) => {
     console.log(`Server ready at ${url}`);
 
 });
+
+const refreshGenres = () =>{
+    axios
+        .get(`${TMDB_BASE_URL}/genre/movie/list`, {
+            params: { api_key: TMDB_API_KEY }
+        })
+        .then(({ data }) => MOVIES_GENRES = data)
+        .catch(e => e)
+}
+refreshGenres();
