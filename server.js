@@ -83,6 +83,7 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         searchByTitle: (obj, { title }, context, info) => {
+            console.log('Procurou por ',title);
             return axios
                 .get(`${TMDB_BASE_URL}/search/movie`, {
                     params: { api_key: TMDB_API_KEY, query: title }
@@ -91,6 +92,7 @@ const resolvers = {
                 .catch(e => e);
         },
         searchById: (obj, { id }, context, info) => {
+            
             return axios
                 .get(`${TMDB_BASE_URL}/movie/${id}`, {
                     params: { api_key: TMDB_API_KEY }
