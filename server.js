@@ -60,7 +60,7 @@ const typeDefs = gql`
   }
 
   type Streaming {
-    company: Company!
+    company: Company
     web_url: String
     android_url: String
     ios_url: String
