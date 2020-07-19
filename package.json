@@ -29,5 +29,10 @@
 		"nodemon": "^2.0.4",
 		"prettier": "^2.0.5",
 		"ts-node-dev": "^1.0.0-pre.52"
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-conventional-changelog"
+		}
 	}
 }
