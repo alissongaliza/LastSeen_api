@@ -1,7 +1,8 @@
 {
 	"scripts": {
 		"start": "ts-node-dev -r tsconfig-paths/register -- app.ts",
-		"lint": "eslint --fix --ext .ts ."
+		"lint": "eslint --fix --ext .ts .",
+		"local": "docker-compose -f docker-compose.yml -f docker-compose.local.yml"
 	},
 	"dependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.6.1",

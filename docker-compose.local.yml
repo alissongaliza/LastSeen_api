@@ -1,0 +1,11 @@
+version: '3.3'
+
+services:
+  lastseen-backend:
+    volumes:
+      - '.:/app'
+    build:
+      context: '.'
+      dockerfile: 'Dockerfile.local'
+    ports:
+      - '4000:4000'

@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  lastseen-backend:
+    container_name: lastseen-backend
+    restart: always
+    ports:
+      - '4000'
+    networks:
+      - base
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
+networks:
+  base:
