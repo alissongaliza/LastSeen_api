@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Service } from 'typedi';
 
 import { Movie } from 'core/models/Movie';
 
@@ -6,6 +7,7 @@ import { TMDB_BASE_URL } from 'util/constants';
 
 import { IMovieUsecase } from '../IMovieUsecase';
 
+@Service()
 export class MovieUsecase implements IMovieUsecase {
 	async findOneMovieById(id: number): Promise<Movie> {
 		try {

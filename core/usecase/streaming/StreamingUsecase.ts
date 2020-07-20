@@ -1,10 +1,12 @@
 import JustWatch from 'justwatch-api';
 import _ from 'lodash';
+import { Service } from 'typedi';
 
 import { Streaming } from 'core/models/Streaming';
 
 import { IStreamingUsecase } from '../IStreamingUsecase';
 
+@Service()
 export class StreamingUsecase implements IStreamingUsecase {
 	async listStreaming(movieTitle?: string): Promise<Streaming[]> {
 		const movies = await new JustWatch().search({ query: movieTitle });
