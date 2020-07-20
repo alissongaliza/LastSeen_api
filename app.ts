@@ -1,7 +1,9 @@
-import { ApolloServer, gql } from 'apollo-server';
+import { ApolloServer } from 'apollo-server';
 import axios from 'axios';
 import JustWatch from 'justwatch-api';
 import _ from 'lodash';
+
+import { typeDefs } from 'core/delivery';
 
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -32,52 +34,6 @@ let MOVIES_GENRES = [
 	{ id: 37, name: 'Western' },
 ];
 
-// Construct a schema, using GraphQL schema language
-const typeDefs = gql`
-	type Movie {
-		id: Int!
-		title: String!
-		genres: [Genre]
-		original_language: String
-		original_title: String
-		overview: String
-		popularity: Float
-		release_date: String
-		runtime: Int
-		tagline: String
-		vote_average: Float
-		vote_count: Int
-		poster_path: String
-		poster_fullPath: String
-		streamingServices: [Streaming]
-	}
-
-	type Genre {
-		id: Int!
-		name: String!
-	}
-
-	type Streaming {
-		company: Company
-		web_url: String
-		android_url: String
-		ios_url: String
-	}
-
-	type Company {
-		id: Int!
-		name: String!
-		iconURL: String!
-	}
-
-	type Query {
-		searchByTitle(title: String!): [Movie]
-		searchPopularMovies: [Movie]
-		searchById(id: Int!): Movie
-		searchAvailabilityByTitle(title: String!): [Streaming]
-		searchProviders: [Company]
-	}
-`;
 // The resolvers provides a resolver function for each API endpoint
 const resolvers = {
 	Query: {
