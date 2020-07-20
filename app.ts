@@ -144,7 +144,7 @@ server.listen().then(({ url }) => {
 const refreshGenres = () => {
 	axios
 		.get(`${TMDB_BASE_URL}/genre/movie/list`, {
-			params: { api_key: TMDB_API_KEY },
+			params: { api_key: process.env.TMDB_API_KEY },
 		})
 		.then(({ data }) => (MOVIES_GENRES = data.genres))
 		.catch((e) => e);
