@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server';
 import axios from 'axios';
 
 import { typeDefs, resolvers } from 'core/delivery';
+import { setupUsecases } from 'core/usecase';
 
 import { TMDB_BASE_URL } from 'util/constants';
 
@@ -29,9 +30,14 @@ export let MOVIES_GENRES = [
 
 const server = new ApolloServer({ typeDefs, resolvers, cors: true });
 server.listen().then(({ url }) => {
-	refreshGenres();
+	setup();
 	console.log(`Server ready at ${url}`);
 });
+
+const setup = () => {
+	setupUsecases();
+	refreshGenres();
+};
 
 const refreshGenres = () => {
 	axios
