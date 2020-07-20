@@ -5,12 +5,7 @@ import _ from 'lodash';
 
 import { typeDefs } from 'core/delivery';
 
-const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
-const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
-const COMPANY_LOGO = 'https://images.justwatch.com';
-const ICON_SIZE = 's100/';
-const TMDB_API_KEY = 'dc1a229b6a5f81208412ed5e273fe045';
-let helperCounter = 0;
+import { TMDB_BASE_URL } from 'util/constants';
 
 let MOVIES_GENRES = [
 	{ id: 28, name: 'Action' },
