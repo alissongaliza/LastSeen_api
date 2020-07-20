@@ -3,11 +3,13 @@ import axios from 'axios';
 import JustWatch from 'justwatch-api';
 import _ from 'lodash';
 
+import { Movie } from 'core/models/Movie';
+
 import { TMDB_BASE_URL, IMAGE_URL } from 'util/constants';
 
 export const movieResolver = {
 	Query: {
-		searchByTitle: async (_, { title }: any) => {
+		searchByTitle: async (_, { title }: any): Promise<Movie> => {
 			try {
 				const { data } = await axios.get(`${TMDB_BASE_URL}/search/movie`, {
 					params: { api_key: process.env.TMDB_API_KEY, query: title },
@@ -17,7 +19,7 @@ export const movieResolver = {
 				return e;
 			}
 		},
-		searchById: async (_, { id }: any) => {
+		searchById: async (_, { id }: any): Promise<Movie> => {
 			try {
 				const { data } = await axios.get(`${TMDB_BASE_URL}/movie/${id}`, {
 					params: { api_key: process.env.TMDB_API_KEY },
@@ -27,7 +29,7 @@ export const movieResolver = {
 				return e;
 			}
 		},
-		searchPopularMovies: async (_, _args: any) => {
+		searchPopularMovies: async (_, _args: any): Promise<Movie[]> => {
 			try {
 				const { data } = await axios.get(`${TMDB_BASE_URL}/movie/popular`, {
 					params: { api_key: process.env.TMDB_API_KEY },
@@ -39,13 +41,13 @@ export const movieResolver = {
 		},
 	},
 	Genre: {
-		id: (id: any) =>
+		id: (id: any): number =>
 			_.find(MOVIES_GENRES, (el: { id: any }) => el.id == id)
 				.id /*returns the matching obj, therefore i pick the wanted property*/,
-		name: (id: any) => _.find(MOVIES_GENRES, (el: { id: any }) => el.id == id).name,
+		name: (id: any): string => _.find(MOVIES_GENRES, (el: { id: any }) => el.id == id).name,
 	},
 	Movie: {
-		poster_fullPath: ({ poster_path }) => `${IMAGE_URL}${poster_path}`,
+		poster_fullPath: ({ poster_path }): string => `${IMAGE_URL}${poster_path}`,
 		streamingServices: async ({ title }) => {
 			const movies = await new JustWatch().search({ query: title });
 
@@ -60,7 +62,7 @@ export const movieResolver = {
 					ios_url: urls.deeplink_ios,
 				};
 			});
-			return _.uniqBy(providers, 'id'); //removes duplicates
+			return _.uniqBy(providers, 'id');
 		},
 		genres: ({ genre_ids }) => genre_ids,
 	},

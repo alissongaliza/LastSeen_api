@@ -2,14 +2,14 @@ import { gql } from 'apollo-server';
 
 const streamingTypedef = gql`
 	type Streaming {
-		company: Company
+		provider: Provider
 		web_url: String
 		android_url: String
 		ios_url: String
 	}
 
 	extend type Query {
-		searchAvailabilityByTitle(title: String!): [Streaming]
+		searchStreamingOptionsByMovieTitle(title: String!): [Streaming]
 	}
 `;
 

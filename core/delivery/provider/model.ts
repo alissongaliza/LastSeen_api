@@ -1,15 +1,15 @@
 import { gql } from 'apollo-server';
 
-const companyTypedef = gql`
-	type Company {
+const providerTypedef = gql`
+	type Provider {
 		id: Int!
 		name: String!
 		iconURL: String!
 	}
 
 	extend type Query {
-		searchProviders: [Company]
+		searchProviders: [Provider]
 	}
 `;
 
-export { companyTypedef };
+export { providerTypedef };

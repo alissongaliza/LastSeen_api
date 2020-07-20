@@ -1,6 +1,6 @@
 import JustWatch from 'justwatch-api';
 
-export const companyResolver = {
+export const providerResolver = {
 	Query: {
 		searchProviders: () => {
 			return new JustWatch().getProviders().then((e) =>

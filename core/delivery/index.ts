@@ -1,9 +1,9 @@
 import { gql } from 'apollo-server';
 
-import { companyTypedef } from './company/model';
-import { companyResolver } from './company/resolver';
 import { movieTypedef } from './movie/model';
 import { movieResolver } from './movie/resolver';
+import { providerTypedef } from './provider/model';
+import { providerResolver } from './provider/resolver';
 import { streamingTypedef } from './streaming/model';
 import { streamingResolver } from './streaming/resolver';
 
@@ -13,5 +13,5 @@ const baseTypeDef = gql`
 	}
 `;
 
-export const typeDefs = [baseTypeDef, movieTypedef, streamingTypedef, companyTypedef];
-export const resolvers = [movieResolver, streamingResolver, companyResolver];
+export const typeDefs = [baseTypeDef, movieTypedef, streamingTypedef, providerTypedef];
+export const resolvers = [movieResolver, streamingResolver, providerResolver];
