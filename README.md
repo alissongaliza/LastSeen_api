@@ -8,7 +8,7 @@ This project is just one way of learning something new. With that said, keep in 
 
 I intend to change things a little and learn maybe Redis or some specific AWS services, so refer to [version 1](https://github.com/alissongaliza/LastSeen_api/releases/tag/v1.0) if you want to see my barebone implementation of this lib.
 
-#### Planned changes
+#### Roadmap
 
 - [x] Add README
 - [x] Containerize everything
