@@ -1,7 +1,11 @@
+import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server';
 import axios from 'axios';
+import path from 'path';
+import { buildSchema } from 'type-graphql';
+import Container from 'typedi';
 
-import { typeDefs, resolvers } from 'core/delivery';
+import { resolvers } from 'core/delivery';
 import { setupUsecases } from 'core/usecase';
 
 import { TMDB_BASE_URL } from 'util/constants';
@@ -28,12 +32,6 @@ export let MOVIES_GENRES = [
 	{ id: 37, name: 'Western' },
 ];
 
-const server = new ApolloServer({ typeDefs, resolvers, cors: true });
-server.listen().then(({ url }) => {
-	setup();
-	console.log(`Server ready at ${url}`);
-});
-
 const setup = () => {
 	setupUsecases();
 	refreshGenres();
@@ -47,4 +45,17 @@ const refreshGenres = () => {
 		.then(({ data }) => (MOVIES_GENRES = data.genres))
 		.catch((e) => e);
 };
-refreshGenres();
+
+const main = async () => {
+	setup();
+	const schema = await buildSchema({
+		resolvers,
+		emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
+		container: Container,
+	});
+	new ApolloServer({ schema }).listen().then(({ url }) => {
+		console.log(`Server ready at ${url}`);
+	});
+};
+
+main();

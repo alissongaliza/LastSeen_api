@@ -1,16 +1,20 @@
-import { gql } from 'apollo-server';
+import { ObjectType, Field } from 'type-graphql';
+import { Service } from 'typedi';
 
-const streamingTypedef = gql`
-	type Streaming {
-		provider: Provider
-		web_url: String
-		android_url: String
-		ios_url: String
-	}
+import { Provider } from 'core/models/Provider';
 
-	extend type Query {
-		searchStreamingOptionsByMovieTitle(title: String!): [Streaming]
-	}
-`;
+import { ProviderGraphQL } from '../provider/model';
 
-export { streamingTypedef };
+@Service()
+@ObjectType()
+export class StreamingGraphQL {
+	idProvider: number; //hidden
+	@Field(() => ProviderGraphQL, { nullable: true })
+	provider?: Provider | null;
+	@Field()
+	web_url: string;
+	@Field()
+	android_url: string;
+	@Field()
+	ios_url: string;
+}

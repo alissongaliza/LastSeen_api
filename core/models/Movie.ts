@@ -5,6 +5,7 @@ export type Movie = {
 	id: number;
 	title: string;
 	genres: Genre[];
+	genre_ids: number[];
 	original_language: string;
 	original_title: string;
 	overview: string;

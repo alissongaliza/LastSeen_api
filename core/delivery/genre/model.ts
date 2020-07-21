@@ -1,13 +1,9 @@
 import { ObjectType, Field, ID } from 'type-graphql';
-import { Service } from 'typedi';
 
-@Service()
 @ObjectType()
-export class ProviderGraphQL {
+export class GenreGraphQL {
 	@Field(() => ID)
 	id: number;
 	@Field()
 	name: string;
-	@Field()
-	iconURL: string;
 }
