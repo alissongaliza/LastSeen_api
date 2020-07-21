@@ -21,3 +21,5 @@ I intend to change things a little and learn maybe Redis or some specific AWS se
 - [ ] Add in-memory storage
   - [ ] Cache support
 - [ ] Host project on cloud
+
+All those changes are being implemented in [devel](https://github.com/alissongaliza/LastSeen_api/tree/devel) branch
