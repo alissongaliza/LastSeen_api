@@ -14,6 +14,15 @@ export class GenreRedis implements IGenreRepository {
 		const name = await redis.hget(REDIS_GENRE, id.toString());
 		return name ? { id, name } : null;
 	}
+	// async listByIds(ids: number[]): Promise<Genre[]> {
+	// const names = await redis.hmget(
+	// 	REDIS_GENRE,
+	// 	ids.map((el) => el.toString())
+	// );
+	// console.log(names);
+	// throw 'a';
+	// return name ? { id, name } : null;
+	// }
 	async createBatch(genres: Genre[]): Promise<boolean> {
 		// main hash structure
 		const genreStringified = genres.map((genre) => [`${genre.id}`, genre.name]);
