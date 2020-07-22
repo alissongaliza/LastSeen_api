@@ -12,5 +12,11 @@ services:
       - 8.8.8.8
       - 8.8.4.4
 
+  lastseen-redis:
+    container_name: lastseen-redis
+    restart: always
+    networks:
+      - base
+
 networks:
   base:

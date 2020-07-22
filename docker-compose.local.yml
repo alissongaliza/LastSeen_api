@@ -10,3 +10,8 @@ services:
     ports:
       - '4000:4000'
     env_file: .env
+
+  lastseen-redis:
+    image: redis:6.0.5-alpine
+    ports:
+      - '6379:6379'
