@@ -6,6 +6,7 @@ import { buildSchema } from 'type-graphql';
 import Container from 'typedi';
 
 import { resolvers } from 'core/delivery';
+import { setupRepository } from 'core/repository';
 import { setupUsecases } from 'core/usecase';
 
 import { TMDB_BASE_URL } from 'util/constants';
