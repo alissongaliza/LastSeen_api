@@ -73,7 +73,3 @@ export class MovieResolver implements ResolverInterface<MovieGraphQL> {
 		return genre_ids;
 	}
 }
-// };
-// Genre: {
-
-// },
