@@ -1,6 +1,7 @@
 import { Resolver, ResolverInterface, Query, FieldResolver, Root, Arg } from 'type-graphql';
 import { Inject } from 'typedi';
 
+import { Genre } from 'core/models/Genre';
 import { Movie } from 'core/models/Movie';
 import { Streaming } from 'core/models/Streaming';
 import { IGenreUsecase } from 'core/usecase/IGenreUsecase';
@@ -39,5 +40,9 @@ export class MovieResolver implements ResolverInterface<MovieGraphQL> {
 	@FieldResolver()
 	async streamingServices(@Root() movie: Movie): Promise<Streaming[]> {
 		return await this.streamingUsecase.listStreaming(movie);
+	}
+	@FieldResolver()
+	async genres(@Root() movie: Movie): Promise<Genre[]> {
+		return await this.genreUsecase.findManyGenresById(movie.genre_ids);
 	}
 }

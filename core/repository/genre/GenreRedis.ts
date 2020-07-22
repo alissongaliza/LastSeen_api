@@ -4,9 +4,9 @@ import { Genre } from 'core/models/Genre';
 
 import { REDIS_GENRE } from 'util/constants';
 
-import { IGenreRepository } from '../IGenreRepository';
-
 import { redis } from '..';
+
+import { IGenreRepository } from '../IGenreRepository';
 
 @Service()
 export class GenreRedis implements IGenreRepository {
@@ -15,7 +15,9 @@ export class GenreRedis implements IGenreRepository {
 		return name ? { id, name } : null;
 	}
 	async createBatch(genres: Genre[]): Promise<boolean> {
-		const response = await redis.hmset(REDIS_GENRE, genres);
-		return response === 'OK';
+		// main hash structure
+		const genreStringified = genres.map((genre) => [`${genre.id}`, genre.name]);
+		const response1 = await redis.hmset(REDIS_GENRE, ...genreStringified);
+		return response1 === 'OK';
 	}
 }

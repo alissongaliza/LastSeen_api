@@ -1,19 +1,19 @@
-import { Resolver } from 'type-graphql';
+import { Resolver, FieldResolver, Root } from 'type-graphql';
 import { Service } from 'typedi';
+
+import { Genre } from 'core/models/Genre';
 
 import { GenreGraphQL } from './model';
 
 @Service()
 @Resolver(GenreGraphQL)
 export class GenreResolver {
-	// @Inject()
-	// genreUsecase: IGenreUsecase;
-	// @FieldResolver()
-	// id(@Root() { id }): number {
-	// 	return this.genreUsecase.findOneGenreById(id);
-	// }
-	// @FieldResolver()
-	// name(@Root() { id }): string {
-	// 	return _.find(MOVIES_GENRES, (el: { id: number }) => el.id == id).name;
-	// }
+	@FieldResolver()
+	id(@Root() genre: Genre): number {
+		return genre.id;
+	}
+	@FieldResolver()
+	name(@Root() genre: Genre): string {
+		return genre.name;
+	}
 }
