@@ -19,8 +19,13 @@ export class MovieRedis implements IMovieRepository {
 		return null;
 	}
 	async findById(id: number): Promise<Movie | null> {
+		// first check the popular hash (only about 20 records)
+		const moviePopularString = await redis.hget(REDIS_MOVIE_POPULAR, id.toString());
+		if (moviePopularString) return JSON.parse(moviePopularString);
+		// check regular movies hash
 		const movieString = await redis.hget(REDIS_MOVIE, id.toString());
-		return movieString ? JSON.parse(movieString) : null;
+		if (movieString) return JSON.parse(movieString);
+		return null;
 	}
 	async listPopular(): Promise<Movie[]> {
 		const moviesPair = await redis.hgetall(REDIS_MOVIE_POPULAR);
@@ -34,7 +39,6 @@ export class MovieRedis implements IMovieRepository {
 	async createBatch(popular: boolean, data: Movie[]): Promise<boolean> {
 		// main hash structure
 		const moviesStringified = data.map((movie) => [movie.id, JSON.stringify(movie)]);
-		// console.log(moviesStringified);
 		// movie hash lookup table
 		const moviesTable = data.map((movie) => [movie.title, movie.id]);
 		// if popular then choose the popular movie hash

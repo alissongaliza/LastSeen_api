@@ -31,14 +31,18 @@ export class MovieUsecase implements IMovieUsecase {
 	async findOneMovieByTitle(title: string): Promise<Movie | null> {
 		try {
 			const movie = await this.movieRepository.findByTitle(title);
+			// found it on cache
 			if (movie) return movie;
 			const { data } = await axios.get(`${TMDB_BASE_URL}/search/movie`, {
 				params: { api_key: process.env.TMDB_API_KEY, query: title },
 			});
-			// found it on cache
-			const movieFetched: Movie = data.result;
-			this.movieRepository.createBatch(false, [movieFetched]);
-			return movieFetched;
+			if (data.results.length > 0) {
+				// pick the most likely (API sorts by popularity)
+				const movieFetched: Movie = data.results[0];
+				this.movieRepository.createBatch(false, [movieFetched]);
+				return movieFetched;
+			}
+			return null;
 		} catch (e) {
 			console.log(e);
 			return e;

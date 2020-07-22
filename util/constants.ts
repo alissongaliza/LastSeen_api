@@ -6,3 +6,4 @@ export const REDIS_GENRE = 'genre';
 export const REDIS_MOVIE = 'movie';
 export const REDIS_MOVIE_POPULAR = 'movie_popular';
 export const REDIS_MOVIE_TABLE = 'movie_table';
+export const REDIS_MOVIE_STREAMING = 'movie_streaming';

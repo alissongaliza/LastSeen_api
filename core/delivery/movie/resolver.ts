@@ -38,6 +38,6 @@ export class MovieResolver implements ResolverInterface<MovieGraphQL> {
 	}
 	@FieldResolver()
 	async streamingServices(@Root() movie: Movie): Promise<Streaming[]> {
-		return this.streamingUsecase.listStreaming(movie.title);
+		return await this.streamingUsecase.listStreaming(movie);
 	}
 }
