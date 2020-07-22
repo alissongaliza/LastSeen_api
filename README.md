@@ -18,8 +18,8 @@ I intend to change things a little and learn maybe Redis or some specific AWS se
   - [x] Configure git hooks
   - [ ] Add a simple CI
 - [ ] Add unit tests
-- [ ] Add in-memory storage
-  - [ ] Cache support
+- [x] Add in-memory storage
+  - [x] Cache support
 - [ ] Host project on cloud
 
 All those changes are being implemented in [devel](https://github.com/alissongaliza/LastSeen_api/tree/devel) branch
