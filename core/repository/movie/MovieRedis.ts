@@ -44,6 +44,10 @@ export class MovieRedis implements IMovieRepository {
 		// if popular then choose the popular movie hash
 		const response1 = await redis.hmset(`${popular ? REDIS_MOVIE_POPULAR : REDIS_MOVIE}`, ...moviesStringified);
 		const response2 = await redis.hmset(`${REDIS_MOVIE_TABLE}`, ...moviesTable);
+		// 15 min
+		redis.expire(REDIS_MOVIE, 900);
+		// 5 mins
+		redis.expire(REDIS_MOVIE_POPULAR, 300);
 		return response1 === response2 && response1 === 'OK';
 	}
 }

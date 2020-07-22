@@ -27,6 +27,8 @@ export class GenreRedis implements IGenreRepository {
 		// main hash structure
 		const genreStringified = genres.map((genre) => [`${genre.id}`, genre.name]);
 		const response1 = await redis.hmset(REDIS_GENRE, ...genreStringified);
+		// a day
+		redis.expire(REDIS_GENRE, 86400);
 		return response1 === 'OK';
 	}
 }

@@ -35,6 +35,7 @@ export class StreamingRedis implements IStreamingRepository {
 			JSON.stringify(streaming),
 		]);
 		const response1 = await redis.hmset(REDIS_MOVIE_STREAMING, ...streamingStringified);
+		redis.expire(REDIS_MOVIE_STREAMING, 900);
 		return response1 === 'OK';
 	}
 }
