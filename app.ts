@@ -8,8 +8,10 @@ import { resolvers } from 'core/delivery';
 import { setupRepository } from 'core/repository';
 import { setupUsecases } from 'core/usecase';
 
+import { MODE } from 'util/enum';
+
 const setup = () => {
-	setupRepository();
+	setupRepository(MODE.REGULAR);
 	setupUsecases();
 };
 
