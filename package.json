@@ -2,7 +2,8 @@
 	"scripts": {
 		"start": "ts-node-dev -r tsconfig-paths/register -- app.ts",
 		"lint": "eslint --fix --ext .ts .",
-		"local": "docker-compose -f docker-compose.yml -f docker-compose.local.yml"
+		"local": "docker-compose -f docker-compose.yml -f docker-compose.local.yml",
+		"test": "./node_modules/.bin/jest"
 	},
 	"dependencies": {
 		"@types/ioredis": "^4.17.2",
@@ -25,6 +26,7 @@
 		"typescript": "^3.9.7"
 	},
 	"devDependencies": {
+		"@types/jest": "^26.0.6",
 		"commitizen": "^4.1.2",
 		"cz-conventional-changelog": "^3.2.0",
 		"eslint": "^7.5.0",
@@ -33,8 +35,10 @@
 		"eslint-plugin-prettier": "^3.1.3",
 		"eslint-plugin-unused-imports": "^0.1.3",
 		"husky": "^4.2.5",
+		"jest": "^26.1.0",
 		"nodemon": "^2.0.4",
 		"prettier": "^2.0.5",
+		"ts-jest": "^26.1.3",
 		"ts-node-dev": "^1.0.0-pre.52"
 	},
 	"config": {
