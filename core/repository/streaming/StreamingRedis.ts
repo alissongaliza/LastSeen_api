@@ -5,13 +5,10 @@ import { Streaming } from 'core/models/Streaming';
 import { REDIS_MOVIE_STREAMING } from 'util/constants';
 import { iterateHash } from 'util/functions';
 
-import { IStreamingRepository } from '../IStreamingRepository';
+import { IStreamingRepository, StreamingWithMovie } from '../IStreamingRepository';
 
 import { redis } from '..';
 
-type StreamingWithMovie = Streaming & {
-	movieId: number;
-};
 @Service()
 export class StreamingRedis implements IStreamingRepository {
 	async listByMovieId(movieId: number): Promise<Streaming[]> {
@@ -28,9 +25,9 @@ export class StreamingRedis implements IStreamingRepository {
 		} while (cursor != 0);
 		return parsedStreams;
 	}
-	async createBatch(streamings: StreamingWithMovie[]): Promise<boolean> {
+	async createBatch(streams: StreamingWithMovie[]): Promise<boolean> {
 		// main hash structure
-		const streamingStringified = streamings.map((streaming) => [
+		const streamingStringified = streams.map((streaming) => [
 			`${streaming.movieId}:${streaming.idProvider}`,
 			JSON.stringify(streaming),
 		]);

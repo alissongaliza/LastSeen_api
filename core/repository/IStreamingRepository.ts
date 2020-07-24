@@ -1,12 +1,12 @@
 import { Service } from 'typedi';
 
 import { Streaming } from 'core/models/Streaming';
-type StreamingWithMovie = Streaming & {
+export type StreamingWithMovie = Streaming & {
 	movieId: number;
 };
 
 @Service()
 export abstract class IStreamingRepository {
 	abstract async listByMovieId(movieId: number): Promise<Streaming[]>;
-	abstract async createBatch(streamings: StreamingWithMovie[]): Promise<boolean>;
+	abstract async createBatch(streams: StreamingWithMovie[]): Promise<boolean>;
 }
