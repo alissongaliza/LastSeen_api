@@ -52,13 +52,23 @@ export class MovieUsecase implements IMovieUsecase {
 	async listPopularMovies(): Promise<Movie[]> {
 		try {
 			const movies = await this.movieRepository.listPopular();
+			// if its empty then fetch movies
+			return movies.length === 0 ? this.refreshPopularMovies() : movies;
+		} catch (e) {
+			return e;
+		}
+	}
+
+	async refreshPopularMovies(): Promise<Movie[]> {
+		try {
+			const movies = await this.movieRepository.listPopular();
 			if (movies.length > 0) return movies;
 
 			const { data } = await axios.get(`${TMDB_BASE_URL}/movie/popular`, {
 				params: { api_key: process.env.TMDB_API_KEY },
 			});
 			const moviesFetched: Movie[] = data.results;
-			console.log(await this.movieRepository.createBatch(true, moviesFetched));
+			await this.movieRepository.createBatch(true, moviesFetched);
 			return moviesFetched;
 		} catch (e) {
 			return e;

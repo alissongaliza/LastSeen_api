@@ -7,4 +7,5 @@ export abstract class IMovieUsecase {
 	abstract findOneMovieById(id: number): Promise<Movie | null>;
 	abstract findOneMovieByTitle(title: string): Promise<Movie | null>;
 	abstract listPopularMovies(): Promise<Movie[]>;
+	abstract refreshPopularMovies(): Promise<Movie[]>;
 }
