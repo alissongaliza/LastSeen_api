@@ -37,7 +37,7 @@ export class GenreUsecase implements IGenreUsecase {
 			return e;
 		}
 	}
-	async updateAllGenres(): Promise<void> {
+	async refreshAllGenres(): Promise<void> {
 		try {
 			const { data } = await axios.get(`${TMDB_BASE_URL}/genre/movie/list`, {
 				params: { api_key: process.env.TMDB_API_KEY },

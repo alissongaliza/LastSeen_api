@@ -16,8 +16,8 @@ export class StreamingUsecase implements IStreamingUsecase {
 	@Inject()
 	streamingRepository: IStreamingRepository;
 
-	async listStreaming(movie: Movie): Promise<Streaming[]> {
-		// title is used instead of id because streaming is search on another API, so IDs are different
+	async listStreamingByMovie(movie: Movie): Promise<Streaming[]> {
+		// title is used instead of id because streaming is searched on another API, so IDs are different
 		const streams: Streaming[] = await this.streamingRepository.listByMovieId(movie.id);
 		if (streams.length > 0) return streams;
 		const movies = await new JustWatch().search({ query: movie.title });

@@ -11,7 +11,7 @@ import { StreamingUsecase } from './streaming/StreamingUsecase';
 
 const preLoadGenres = async (): Promise<void> => {
 	const genreUsecase = Container.get(GenreUsecase);
-	await genreUsecase.updateAllGenres();
+	await genreUsecase.refreshAllGenres();
 };
 
 export const setupUsecases = (): void => {

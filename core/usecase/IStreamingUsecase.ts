@@ -5,5 +5,5 @@ import { Streaming } from 'core/models/Streaming';
 
 @Service()
 export abstract class IStreamingUsecase {
-	abstract async listStreaming(movie: Movie): Promise<Streaming[]>;
+	abstract async listStreamingByMovie(movie: Movie): Promise<Streaming[]>;
 }
