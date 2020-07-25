@@ -1,5 +1,6 @@
 {
 	"hooks": {
-		"pre-commit": "yarn lint && yarn tsc -b tsconfig.json"
+		"pre-commit": "yarn lint && yarn tsc -b tsconfig.json",
+		"pre-push": "yarn lint && yarn tsc -b tsconfig.json && yarn test"
 	}
 }
