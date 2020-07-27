@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage("build") {
       steps {
-        sh 'docker rm $(docker ps -aq)'
+        // sh 'docker rm $(docker ps -aq)'
         sh 'docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD'
         sh 'docker build --tag alissongaliza/lastseen:local --file ./Dockerfile.local .'
         sh 'docker push alissongaliza/lastseen:local'
