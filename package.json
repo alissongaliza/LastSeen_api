@@ -3,6 +3,7 @@
 		"start": "ts-node-dev -r tsconfig-paths/register -- app.ts",
 		"lint": "eslint --fix --ext .ts .",
 		"local": "docker-compose -f docker-compose.yml -f docker-compose.local.yml",
+		"devel": "docker-compose -f docker-compose.yml -f docker-compose.devel.yml",
 		"test": "./node_modules/.bin/jest"
 	},
 	"dependencies": {
