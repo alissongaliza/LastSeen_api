@@ -16,7 +16,7 @@ I intend to change things a little and learn maybe Redis or some specific AWS se
 - [x] Implement a basic project architecture
 - [x] Improve project workflow
   - [x] Configure git hooks
-  - [ ] Add a simple CI
+  - [x] Add a simple CI
 - [x] Add unit tests
 - [x] Add in-memory storage
   - [x] Cache support
