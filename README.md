@@ -20,6 +20,7 @@ I intend to change things a little and learn maybe Redis or some specific AWS se
 - [x] Add unit tests
 - [x] Add in-memory storage
   - [x] Cache support
-- [ ] Host project on cloud
+- [x] Host project on cloud
+- [ ] Thorough documentation
 
 All those changes are being implemented in [devel](https://github.com/alissongaliza/LastSeen_api/tree/devel) branch
