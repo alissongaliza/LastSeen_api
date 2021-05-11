@@ -18,7 +18,7 @@
 		"graphql": "^15.1.0",
 		"ioredis": "^4.17.3",
 		"justwatch-api": "^1.0.4",
-		"lodash": "^4.17.11",
+		"lodash": "^4.17.21",
 		"reflect-metadata": "^0.1.13",
 		"ts-node": "^8.10.2",
 		"tsconfig-paths": "^3.9.0",
