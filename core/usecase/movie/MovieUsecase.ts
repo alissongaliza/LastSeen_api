@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Service, Inject } from 'typedi';
 
 import { Movie } from 'core/models/Movie';
+import { TMDB_API_KEY } from 'core/repository';
 import { IMovieRepository } from 'core/repository/IMovieRepository';
 
 import { TMDB_BASE_URL } from 'util/constants';
@@ -18,7 +19,7 @@ export class MovieUsecase implements IMovieUsecase {
 			// found it on cache
 			if (movie) return movie;
 			const { data } = await axios.get(`${TMDB_BASE_URL}/movie/${id}`, {
-				params: { api_key: process.env.TMDB_API_KEY },
+				params: { api_key: TMDB_API_KEY },
 			});
 			const movieFetched: Movie = data.result;
 			this.movieRepository.createBatch(false, [movieFetched]);
@@ -34,7 +35,7 @@ export class MovieUsecase implements IMovieUsecase {
 			// found it on cache
 			if (movie) return movie;
 			const { data } = await axios.get(`${TMDB_BASE_URL}/search/movie`, {
-				params: { api_key: process.env.TMDB_API_KEY, query: title },
+				params: { api_key: TMDB_API_KEY, query: title },
 			});
 			if (data.results.length > 0) {
 				// pick the most likely (API sorts by popularity)
@@ -65,7 +66,7 @@ export class MovieUsecase implements IMovieUsecase {
 			if (movies.length > 0) return movies;
 
 			const { data } = await axios.get(`${TMDB_BASE_URL}/movie/popular`, {
-				params: { api_key: process.env.TMDB_API_KEY },
+				params: { api_key: TMDB_API_KEY },
 			});
 			const moviesFetched: Movie[] = data.results;
 			await this.movieRepository.createBatch(true, moviesFetched);

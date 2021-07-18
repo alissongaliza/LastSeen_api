@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Service, Inject } from 'typedi';
 
 import { Genre } from 'core/models/Genre';
+import { TMDB_API_KEY } from 'core/repository';
 import { IGenreRepository } from 'core/repository/IGenreRepository';
 
 import { TMDB_BASE_URL } from 'util/constants';
@@ -28,10 +29,6 @@ export class GenreUsecase implements IGenreUsecase {
 			const validGenres: Genre[] = [];
 			genres.map((el) => (el ? validGenres.push(el) : null));
 			return validGenres;
-
-			// const { data } = await axios.get(`${TMDB_BASE_URL}/movie/${id}`, {
-			// 	params: { api_key: process.env.TMDB_API_KEY },
-			// });
 		} catch (e) {
 			console.log(e);
 			return e;
@@ -40,7 +37,7 @@ export class GenreUsecase implements IGenreUsecase {
 	async refreshAllGenres(): Promise<void> {
 		try {
 			const { data } = await axios.get(`${TMDB_BASE_URL}/genre/movie/list`, {
-				params: { api_key: process.env.TMDB_API_KEY },
+				params: { api_key: TMDB_API_KEY },
 			});
 			this.genreRepository.createBatch(data.genres);
 		} catch (e) {
