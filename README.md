@@ -24,14 +24,6 @@ I intend to change things a little and learn maybe Redis or some specific AWS se
   - [x] Added Terraform as the IaC of choice
 - [ ] Thorough documentation
 
-Basic visual representation of resources (auto generated from https://app.codeherent.tech):
+Basic visual representation:
 
-
-Main components:
-  - 1 VPC
-  - Elasticache
-  - ECS with Fargate
-- Minor components:
-  - Secrets Manager
-  - ECR
-  - Cloudwatch
+![Blank diagram(1)](https://user-images.githubusercontent.com/21208699/126068887-4ff3a692-d480-4138-86f8-35090f0662e9.png)
